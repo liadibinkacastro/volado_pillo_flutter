@@ -14,6 +14,10 @@ jobs:
         with:
           flutter-version: '3.22.0'
           channel: 'stable'
+
+      - name: Fix Gradle project
+        run: flutter create. --project-name volado_pillo_flutter --platforms=android --overwrite
+
       - run: flutter pub get
       - run: flutter build apk --debug
       - uses: actions/upload-artifact@v4
