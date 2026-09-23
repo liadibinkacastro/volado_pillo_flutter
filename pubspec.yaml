@@ -1,15 +1,17 @@
 name: volado_pillo_flutter
-description: Pillo Poncho Volado
+description: Pillo Poncho volado
 publish_to: 'none'
 version: 1.0.0+1
+
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
+
 flutter:
   uses-material-design: true
   assets:
     - assets/aguila.jpeg
     - assets/sello.jpeg
-    - assets/icono.jpeg
