@@ -10,6 +10,6 @@ dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/aguila
-    - assets/sello
-    - assets/icono
+    - assets/aguila.jpeg
+    - assets/sello.jpeg
+    - assets/icono.jpeg
