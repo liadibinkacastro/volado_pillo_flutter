@@ -54,7 +54,7 @@ class _VoladoScreenState extends State<VoladoScreen> with SingleTickerProviderSt
     // logica igual a la tuya: cos para aplastar
     double factor = cos(angulo * pi / 180).abs();
     bool mostrarAguila = (angulo % 180 < 90) ? esAguila : !esAguila;
-    String asset = mostrarAguila ? 'assets/aguila.png' : 'assets/sello.png';
+    String asset = mostrarAguila ? 'assets/aguila.jpeg' : 'assets/sello.jpeg';
 
     return Scaffold(
       backgroundColor: colorFondo,
