@@ -16,7 +16,7 @@ jobs:
           channel: 'stable'
 
       - name: Fix Gradle project
-        run: flutter create. --project-name volado_pillo_flutter --platforms=android --overwrite
+        run: flutter create . --project-name volado_pillo_flutter --platforms=android --overwrite
 
       - run: flutter pub get
       - run: flutter build apk --debug
