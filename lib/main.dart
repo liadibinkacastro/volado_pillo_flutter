@@ -1,113 +1,58 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-void main() => runApp(const PilloPonchoApp());
+void main() => runApp(const VoladoApp());
 
-class PilloPonchoApp extends StatelessWidget {
-  const PilloPonchoApp({super.key});
+class VoladoApp extends StatelessWidget {
+  const VoladoApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: VoladoScreen(),
+      home: const VoladoPage(),
     );
   }
 }
 
-class VoladoScreen extends StatefulWidget {
-  const VoladoScreen({super.key});
+class VoladoPage extends StatefulWidget {
+  const VoladoPage({super.key});
   @override
-  State<VoladoScreen> createState() => _VoladoScreenState();
+  State<VoladoPage> createState() => _VoladoPageState();
 }
 
-class _VoladoScreenState extends State<VoladoScreen> with SingleTickerProviderStateMixin {
-  static const Color colorFondo = Color(0xFF302702);
-  static const Color colorBoton = Color(0xFF501F0B);
-
-  late AnimationController _ctrl;
-  bool esAguila = true;
-  double angulo = 720; // para que no anime al inicio
-  bool animando = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
-    _ctrl.addListener(() {
-      setState(() {
-        angulo = _ctrl.value * 720;
-      });
-    });
-    // lanzar inicial como en tu codigo
-    WidgetsBinding.instance.addPostFrameCallback((_) => lanzar());
-  }
+class _VoladoPageState extends State<VoladoPage> {
+  String moneda = 'assets/aguila';
+  final random = Random();
 
   void lanzar() {
-    if (animando) return;
-    animando = true;
-    esAguila = Random().nextBool();
-    _ctrl.forward(from: 0).then((_) => animando = false);
+    setState(() {
+      bool esAguila = random.nextBool();
+      moneda = esAguila ? 'assets/aguila' : 'assets/sello';
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // logica igual a la tuya: cos para aplastar
-    double factor = cos(angulo * pi / 180).abs();
-    bool mostrarAguila = (angulo % 180 < 90) ? esAguila : !esAguila;
-    String asset = mostrarAguila ? 'assets/aguila.jpeg' : 'assets/sello.jpeg';
-
     return Scaffold(
-      backgroundColor: colorFondo,
+      backgroundColor: Colors.black,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Tu canvas de 300x300
-            SizedBox(
-              width: 300,
-              height: 300,
-              child: Center(
-                child: Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.identity()..scale(max(0.1, factor), 1.0, 1.0),
-                  child: Image.asset(asset, width: 250, height: 250, fit: BoxFit.contain),
-                ),
-              ),
-            ),
+            // TU ICONO DEL CENTRO
+            Image.asset('assets/icono', width: 200, height: 200),
             const SizedBox(height: 20),
-            // Tu label (aunque en tu codigo lo dejaste vacio)
-            const SizedBox(height: 20),
-            // Tu boton redondo igualito
-            GestureDetector(
-              onTap: lanzar,
-              child: Container(
-                width: 220,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Colors.black, // borde negro
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: const EdgeInsets.all(3), // grosor del borde
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: colorBoton,
-                    borderRadius: BorderRadius.circular(17),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Lanzar Volado",
-                      style: TextStyle(
-                        fontFamily: 'ComicSans', // Flutter usa la que encuentre, queda igual
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+            // LA MONEDA
+            Image.asset(moneda, width: 250, height: 250),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: lanzar,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.amber,
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
               ),
-            ),
+              child: const Text('¡VOLADO!', style: TextStyle(fontSize: 22, color: Colors.black)),
+            )
           ],
         ),
       ),
