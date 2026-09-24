@@ -1,48 +1,32 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MiApp());
-
-class MiApp extends StatelessWidget {
-  const MiApp({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Volado(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
+void main() {
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: Volado(),
+  ));
 }
 
 class Volado extends StatefulWidget {
+  const Volado({super.key});
   @override
   State<Volado> createState() => _VoladoState();
 }
 
 class _VoladoState extends State<Volado> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+  late AnimationController c;
   bool esAguila = true;
-  bool estaGirando = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 700),
-    );
-    lanzar(); // tira al iniciar como en tu Python
+    c = AnimationController(vsync: this, duration: const Duration(milliseconds: 700));
   }
 
   void lanzar() {
-    if (estaGirando) return;
-    setState(() {
-      esAguila = Random().nextBool(); // True = águila, False = sello
-      estaGirando = true;
-    });
-    _controller.forward(from: 0).then((_) {
-      setState(() => estaGirando = false);
-    });
+    setState(() => esAguila = Random().nextBool());
+    c.forward(from: 0);
   }
 
   @override
@@ -54,17 +38,16 @@ class _VoladoState extends State<Volado> with SingleTickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AnimatedBuilder(
-              animation: _controller,
+              animation: c,
               builder: (context, child) {
-                double angulo = _controller.value * 4 * pi; // 720 grados = 2 vueltas
-                double factor = cos(angulo).abs();
-                // efecto de que se hace flaquita al girar
+                double f = cos(c.value * 4 * pi).abs();
                 return Transform(
-                  transform: Matrix4.identity()..scale(factor, 1.0),
                   alignment: Alignment.center,
-                  child: Image.asset(
-                    esAguila ? 'assets/aguila.jpeg' : 'assets/sello.jpeg',
-                    width: 250, height: 250,
+                  transform: Matrix4.identity()..scale(f, 1.0),
+                  child: Container(
+                    width: 200, height: 200,
+                    decoration: const BoxDecoration(color: Colors.amber, shape: BoxShape.circle),
+                    child: Center(child: Text(esAguila ? "AGUILA" : "SELLO", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold))),
                   ),
                 );
               },
@@ -72,13 +55,9 @@ class _VoladoState extends State<Volado> with SingleTickerProviderStateMixin {
             const SizedBox(height: 60),
             ElevatedButton(
               onPressed: lanzar,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF551B05),
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-              ),
-              child: const Text("Lanzar Volado", 
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)),
-            ),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF551B05)),
+              child: const Text("Lanzar Volado"),
+            )
           ],
         ),
       ),
