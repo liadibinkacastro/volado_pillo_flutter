@@ -63,7 +63,7 @@ class _VoladoState extends State<Volado> with SingleTickerProviderStateMixin {
                   transform: Matrix4.identity()..scale(factor, 1.0),
                   alignment: Alignment.center,
                   child: Image.asset(
-                    esAguila ? 'assets/aguila.png' : 'assets/sello.png',
+                    esAguila ? 'assets/aguila.jpeg' : 'assets/sello.jpeg',
                     width: 250, height: 250,
                   ),
                 );
